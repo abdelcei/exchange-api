@@ -12,13 +12,13 @@ console.log(process.env.MONGO_URL)
 const PORT = process.env.PORT || 3000
 const BBDD_URL = process.env.MONGO_URL || 'mongodb://localhost:27017/exchangeP2P'
 
-const conectar = async () => {
+const connect = async () => {
     await mongoose.connect(BBDD_URL)
     .then(() => {console.log('Conectado a MongoDB')})
     .catch(error => console.log('Error al conectar a MongoDB:', error))
 }
 
-conectar()
+connect()
 
 const app = express()
 

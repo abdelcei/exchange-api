@@ -191,8 +191,7 @@ const postOffer = async ( req , res , next )=>{
                 amount_min,
                 amount_max,
                 rate,
-                description,
-                status} = req.body
+                description} = req.body
 
         const actualDate = new Date()
 
@@ -204,7 +203,7 @@ const postOffer = async ( req , res , next )=>{
             amount_max,
             rate,
             description,
-            status,
+            status : 'open',
             created_at: actualDate, 
             updated_at: actualDate,
         })
