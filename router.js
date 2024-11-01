@@ -3,6 +3,7 @@ const router = express.Router()
 const { getInicio,
     getUsers,
     getUserById,
+    getUserByUserName,
     postUser,
     updateUser,
     deleteUser,
@@ -17,6 +18,7 @@ const { getInicio,
 router.route('/').get(getInicio)
 router.route('/users').get(getUsers)
 router.route('/user/:id').get(getUserById)
+router.route('/user/:username').get(getUserByUserName)
 router.route('/:user/offers').get( getOfferByUserId)
 router.route('/user').post(postUser)
 router.route('/user').put(updateUser)

@@ -44,6 +44,22 @@ const getUserById = async ( req , res )=> {
     }
 }
 
+const getUserByUserName = async ( req , res )=> {
+
+    try {
+        
+        const { username } = req.params
+    
+        const user = await User.findById(id)
+
+        const offers = await Offer.find({username : username})
+    
+        res.status(200).json({ ...user.toObject(), offers})
+    } catch (error) {
+        return res.status(500).json({error:error.message})
+    }
+}
+
 const postUser = async ( req , res , next )=>{
 
     try {
@@ -295,6 +311,7 @@ module.exports = {
     getInicio,
     getUsers,
     getUserById,
+    getUserByUserName,
     postUser,
     updateUser,
     deleteUser,
