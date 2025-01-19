@@ -300,7 +300,7 @@ const calculateAllRatios = async (req, res, next) => {
 
       Object.keys(pairs[currency_from]).forEach((currency_to) => {
         const { totalRates, count  } = pairs[currency_from][currency_to];
-        ratios[currency_from][currency_to] = totalRates / count;
+        ratios[currency_from][currency_to] = Number((totalRates / count).toFixed(2));
       });
     });
 
