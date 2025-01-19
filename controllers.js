@@ -126,16 +126,24 @@ const deleteUser = async (req, res, next) => {
 
 const getOffers = async (req, res) => {
 
-  const {limit, currencyFrom : currency_from , currencyTo : currency_to, value } = req.query
   
-
   try {
+    const {limit, currencyFrom : currency_from , currencyTo : currency_to, amount } = req.query
+
+    console.log({
+      limit,
+      currency_from,
+      currency_to,
+      amount,
+    })
 
     const query = {};
+
     if (currency_from) query.currency_from = currency_from;
     if (currency_to) query.currency_to = currency_to;
-    if (value) {
-      const numericValue = Number(value);
+    
+    if (amount) {
+      const numericValue = Number(amount);
       if (isNaN(numericValue)) {
         return res.status(400).json({ error: "Invalid value parameter" });
       }
@@ -143,11 +151,11 @@ const getOffers = async (req, res) => {
       query.amount_max = { $gte: numericValue };
     }
 
-    let buscar;
+      let buscar;
     if (limit) {
-      buscar = await Offer.find(query).limit(Number(limit));
+      buscar = await Offer.find(query).limit(Number(limit)).sort({ updated_at: -1 });
     } else {
-      buscar = await Offer.find(query);
+      buscar = await Offer.find(query).limit(15).sort({ updated_at: -1 });
     }
     
     return res.status(200).json(buscar);
@@ -172,7 +180,7 @@ const getOfferByUserId = async (req, res) => {
   try {
     const { user: userId } = req.params;
 
-    const buscar = await Offer.find({ creator_id: userId });
+    const buscar = await Offer.find({ creator_id: userId }).sort({ updated_at: 1 });
 
     return res.status(200).json(buscar);
   } catch (error) {
