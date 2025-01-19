@@ -15,10 +15,7 @@ const {
   deleteOffer,
   getOfferByUserId,
   calculateAllRatios,
-  getPairs,
   login,
-  loginByID,
-  loginByEmail
 } = require("./controllers");
 
 router.route("/user/name/:username").get(getUserByUserName);
@@ -38,10 +35,7 @@ router.route("/offer").put(updateOffer);
 router.route("/offer").delete(deleteOffer);
 
 router.route("/rates").get(calculateAllRatios);
-router.route("/pairs").get(getPairs);
 
 router.route("/login").post(login);
-router.route("/loginId").post(loginByID);
-router.route("/loginEmail").post(loginByEmail);
 
 module.exports = router;

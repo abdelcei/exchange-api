@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// Definicion del schema de User
 const userSchema = new mongoose.Schema(
   {
     username: String,
@@ -14,6 +15,7 @@ const userSchema = new mongoose.Schema(
   { collection: "users" }
 );
 
+// Definicion del schema de Oferta
 const offerSchema = new mongoose.Schema(
   {
     creator_id: String,
@@ -36,6 +38,7 @@ const getInicio = async (req, res) => {
   return res.json("Haciendo get en /");
 };
 
+// Controlador para obtener listado de usuarios
 const getUsers = async (req, res) => {
   try {
     const buscar = await User.find();
@@ -44,6 +47,8 @@ const getUsers = async (req, res) => {
     return res.status(500).json(error);
   }
 };
+
+// Controlador para obtener usuario segun el ID
 
 const getUserById = async (req, res) => {
   try {
@@ -57,6 +62,7 @@ const getUserById = async (req, res) => {
   }
 };
 
+// Controlador para obtener usuario segun el username
 const getUserByUserName = async (req, res) => {
   try {
     const { username } = req.params;
@@ -69,6 +75,13 @@ const getUserByUserName = async (req, res) => {
   }
 };
 
+// Controlador para crear usuario
+// Recibe estos valores dentro del body
+// username
+// name
+// last_name
+// email
+// password
 const postUser = async (req, res, next) => {
   try {
 
@@ -96,6 +109,10 @@ const postUser = async (req, res, next) => {
   }
 };
 
+// Controlador para actualizar usuario
+// Recibe estos valores dentro del body
+// ID
+// Datos actualizar
 const updateUser = async (req, res, next) => {
   try {
     const { id, ...datos } = req.body;
@@ -110,6 +127,7 @@ const updateUser = async (req, res, next) => {
   }
 };
 
+// Controlador para eliminar usuario
 const deleteUser = async (req, res, next) => {
   try {
     const { id } = req.body;
@@ -124,18 +142,11 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
+// Controlador para obtener listado de ofertas
 const getOffers = async (req, res) => {
 
-  
   try {
     const {limit, currencyFrom : currency_from , currencyTo : currency_to, amount } = req.query
-
-    console.log({
-      limit,
-      currency_from,
-      currency_to,
-      amount,
-    })
 
     const query = {};
 
@@ -164,6 +175,7 @@ const getOffers = async (req, res) => {
   }
 };
 
+// Controlador para obtener una oferta segun el ID
 const getOfferById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -176,6 +188,7 @@ const getOfferById = async (req, res) => {
   }
 };
 
+// Controlador para obtener listado de ofertas de un usuario especifico por su ID
 const getOfferByUserId = async (req, res) => {
   try {
     const { user: userId } = req.params;
@@ -188,6 +201,15 @@ const getOfferByUserId = async (req, res) => {
   }
 };
 
+// Controlador para crear una oferta
+// Recibe estos valores dentro del body
+// creator_id
+// currency_from
+// currency_to
+// amount_min
+// amount_max
+// rate
+// description
 const postOffer = async (req, res, next) => {
 
   try {
@@ -225,6 +247,10 @@ const postOffer = async (req, res, next) => {
   }
 };
 
+// Controlador para actualizar una oferta
+// Recibe estos valores dentro del body
+// id
+// Datos actualizar
 const updateOffer = async (req, res, next) => {
   try {
     const { id, creator_id, ...datos } = req.body;
@@ -241,6 +267,7 @@ const updateOffer = async (req, res, next) => {
   }
 };
 
+// Controlador para eliminar una oferta
 const deleteOffer = async (req, res, next) => {
   try {
     
@@ -257,17 +284,7 @@ const deleteOffer = async (req, res, next) => {
   }
 };
 
-
-const getPairs = async (req, res, next) => {
-  
-  try {
-   
-    res.status(201).json(pairs);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-}
-
+// Controlador para calcular obtener listado de las tasas
 const calculateAllRatios = async (req, res, next) => {
   try {
 
@@ -319,38 +336,7 @@ const calculateAllRatios = async (req, res, next) => {
   }
 };
 
-const loginByID = async (req, res, next) => {
-  try {
-    const { user: username, pass } = req.body;
-
-    try {
-      const userMatched = await User.find({ username: username });
-
-      if (userMatched.password === pass) res.status(200).json(userMatched.id);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  } catch {
-    res.status(400).json({ error: error.message });
-  }
-};
-
-const loginByEmail = async (req, res, next) => {
-  try {
-    const { user: userEmail, pass } = req.body;
-
-    try {
-      const userMatched = await User.find({ email: userEmail });
-
-      if (userMatched.password === pass) res.status(200).json(userMatched.id);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
-  } catch {
-    res.status(400).json({ error: error.message });
-  }
-};
-
+// Controlador para el login
 const login = async (req, res, next) => {
   try {
     const { user, pass } = req.body;
@@ -385,7 +371,7 @@ const login = async (req, res, next) => {
           res.status(200).json({ id: userMatched.id });
         } else return res.status(400).json({ error: "Contraseña Incorrecta" });
       } catch (error) {
-        res.status(400).json({ error: error.message });
+        res.status(400).json({ error: "Usuario y/o contraseña incorrecta" });
       }
     }
   } catch {
@@ -417,8 +403,5 @@ module.exports = {
   deleteOffer,
   getOfferByUserId,
   calculateAllRatios,
-  getPairs,
   login,
-  loginByID,
-  loginByEmail,
 };
